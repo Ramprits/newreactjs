@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import {
@@ -7,11 +8,10 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink
+  NavItem
 } from "reactstrap";
 
-const NavbarPage = props => {
+const NavbarPage = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -22,14 +22,19 @@ const NavbarPage = props => {
           <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/components/">Product</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">
-                  Contact
-                </NavLink>
-              </NavItem>
+              {data.map(item => {
+                return (
+                  <NavItem key={item.id}>
+                    <NavLink
+                      className="nav-link"
+                      to={item.url}
+                      activeClassName="active"
+                    >
+                      {item.name}
+                    </NavLink>
+                  </NavItem>
+                );
+              })}
             </Nav>
           </Collapse>
         </div>
@@ -38,6 +43,8 @@ const NavbarPage = props => {
   );
 };
 
-NavbarPage.propTypes = {};
+NavbarPage.propTypes = {
+  data: PropTypes.array.isRequired
+};
 
 export default NavbarPage;
